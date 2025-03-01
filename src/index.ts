@@ -1,20 +1,23 @@
-import express, { Request, Response } from 'express';
+import "module-alias/register";
+import { sequelize } from "@share/component/sequelize";
+import { config } from "dotenv";
+import express, { Request, Response } from "express";
+import { setupUser } from "@modules/user";
 
-const app = express();
-const port = process.env.PORT || 3000;
+config();
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Chào mừng bạn đến với API sử dụng TypeScript và Express!, Hello Team-Backend');
-});
+(async () => {
+  await sequelize.authenticate();
+  console.log("Connection has been established successfully.");
 
-app.get('/api/test', (req: Request, res: Response) => {
-  const data = {
-    message: 'Dữ liệu test từ API TypeScript',
-    timestamp: new Date().toISOString()
-  };
-  res.json(data);
-});
+  const app = express();
+  const port = process.env.PORT || 3000;
 
-app.listen(port, () => {
-  console.log(`Server đang chạy trên cổng ${port}`);
-});
+  app.use(express.json());
+
+  app.use("/v1", setupUser(sequelize));
+
+  app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+  });
+})();
