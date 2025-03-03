@@ -18,3 +18,9 @@ check phiên bản
 node -v
 npm -v
 ```
+
+### Install SQL
+
+```bash
+docker-compose -f docker-compose.db.yml up -d
+```
