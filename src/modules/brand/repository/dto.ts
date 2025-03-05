@@ -1,4 +1,5 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
+import { date } from "zod";
 
 export class BrandPersistence extends Model {}
 
@@ -20,6 +21,11 @@ export function init(sequelize: Sequelize) {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
+      },
+      updateAt :{
+        type: DataTypes.DATE,
+        allowNull: true,
+        field: "update_at",
       },
     },
     {
