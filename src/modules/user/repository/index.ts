@@ -26,6 +26,7 @@ export class UserRepository implements IUserQueryRepo, IUserCommandRepo {
   get(id: string): Promise<User | null> {
     throw new Error("Method not implemented.");
   }
+  
   listByIds(ids: string): Promise<User[]> {
     throw new Error("Method not implemented.");
   }

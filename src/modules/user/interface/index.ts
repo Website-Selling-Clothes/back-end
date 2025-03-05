@@ -1,7 +1,7 @@
 import { User, UserLoginDTO, UserRegistrationDTO } from "../model";
 
 export interface IUserQueryRepo {
-  get(id: string): Promise<User | null>;
+  get(id: string): Promise<User | null>; 
   listByIds(ids: string): Promise<User[]>;
   findByCond(cond: any): Promise<User | null>;
 }
