@@ -7,7 +7,7 @@ import {
     ErrEmailExisted
 } from "./error"
 
-export const brandShema = z.object({
+export const brandSchema = z.object({
     id: z.string().uuid(),
     name: z 
     .string()
@@ -18,9 +18,9 @@ export const brandShema = z.object({
 });
 
 export const BrandCondDTOSchema = z.object({
-    name: z.string().optional(),
-    email: z.string().optional(),
+    name: z.string().trim().optional(),//.trim() để bỏ khoảng trắng dư thừa
+    email: z.string().trim().optional(),
 });
 
-export type Brand = z.infer<typeof brandShema>;
+export type Brand = z.infer<typeof brandSchema>;
 export type BrandCondDTO = z.infer<typeof BrandCondDTOSchema>;
