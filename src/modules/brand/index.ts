@@ -1,23 +1,21 @@
-import "module-alias/register";
-import { sequelize } from "@share/component/sequelize";
-import { config } from "dotenv";
-import express, { Request, Response } from "express";
-import { setupUser } from "@modules/user";
+import { Router } from "express";
+import { Sequelize } from "sequelize";
+// import { UserUseCase } from "./usecase";
+import { BrandRepository } from "./repository";
+// import { UserHTTPService } from "./transport";
+import { init, modelName } from "./repository/dto";
+export const setupBrand = (sequelize: Sequelize) => {
+  init(sequelize);
 
-config();
+  const repository = new BrandRepository(sequelize, modelName);
+//   const useCase = new BrandUseCase(repository);
+//   const httpService = new BrandHTTPService(useCase);
 
-(async () => {
-  await sequelize.authenticate();
-  console.log("Connection has been established successfully.");
+  const router = Router();
 
-  const app = express();
-  const port = process.env.PORT || 3000;
+//   router.post("/register", httpService.register.bind(httpService));
+//   router.post("/authenticate", httpService.login.bind(httpService));
+  // router.get("/profile", httpService.profile.bind(httpService));
 
-  app.use(express.json());
-
-  app.use("/v1", setupUser(sequelize));
-
-  app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-  });
-})();
+  return router;
+};

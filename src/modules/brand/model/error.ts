@@ -13,3 +13,9 @@ export const emailInvalid = new Error(
 export const ErrEmailExisted = new Error(
     "Email is already existed"
 );
+export const ErrBrandInactivated = new Error(
+    "User is inactivated or banned"
+);
+export const ErrInvalidToken = new Error(
+    "Invalid token"
+);

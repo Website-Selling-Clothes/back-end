@@ -1,8 +1,8 @@
 import { Op, Sequelize } from "sequelize"; 
-import { IBrandQueryRepo, IBrandcommandRepo } from "../interface";
+import { IBrandQueryRepo, IBrandCommandRepo } from "../interface";
 import { Brand, BrandCondDTO } from "../model";
 
-export class BrandRepository implements IBrandQueryRepo, IBrandcommandRepo {
+export class BrandRepository implements IBrandQueryRepo, IBrandCommandRepo {
     constructor(readonly sequelize: Sequelize, readonly modelName: string) {}
 
     async create(data: Brand): Promise<boolean> {
