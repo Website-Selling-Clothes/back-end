@@ -3,6 +3,7 @@ import { sequelize } from "@share/component/sequelize";
 import { config } from "dotenv";
 import express, { Request, Response } from "express";
 import { setupUser } from "@modules/user";
+import { setupCategories } from "@modules/categories";
 
 config();
 
@@ -16,6 +17,8 @@ config();
   app.use(express.json());
 
   app.use("/v1", setupUser(sequelize));
+
+  app.use("/v1", setupCategories(sequelize));
 
   app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
