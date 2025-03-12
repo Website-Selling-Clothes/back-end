@@ -1,32 +1,70 @@
-import { Op, Sequelize } from "sequelize"; 
-import { IBrandQueryRepo, IBrandCommandRepo } from "../interface";
-import { Brand, BrandCondDTO } from "../model";
+import { Sequelize } from "sequelize";
+import { Brand } from "../model";
+import { IBrandCommandRepo, IBrandQueryRepo } from "../interface";
+import { Op } from "sequelize";
 
 export class BrandRepository implements IBrandQueryRepo, IBrandCommandRepo {
-    constructor(readonly sequelize: Sequelize, readonly modelName: string) {}
+    private sequelize: Sequelize;
+    private model: string;
+
+    constructor(sequelize: Sequelize, model: string) {
+        this.sequelize = sequelize;
+        this.model = model;
+    }
+
+    async get(id: string): Promise<Brand | null> {
+        const result = await this.sequelize.model(this.model).findByPk(id);
+        return result?.get({ plain: true }) || null;
+    }
+
+    async getAll(): Promise<Brand[]> {
+        const results = await this.sequelize.model(this.model).findAll();
+        return results.map(item => item.get({ plain: true }));
+    }
+
+    async search(keyword: string): Promise<Brand[]> {
+        const results = await this.sequelize.model(this.model).findAll({
+            where: {
+                name: {
+                    [Op.like]: `%${keyword}%`
+                }
+            }
+        });
+        return results.map(item => item.get({ plain: true }));
+    }
+
+    async listByIds(ids: string): Promise<Brand[]> {
+        const results = await this.sequelize.model(this.model).findAll({
+            where: {
+                id: ids
+            }
+        });
+        return results.map(item => item.get({ plain: true }));
+    }
+
+    async findByCond(cond: any): Promise<Brand | null> {
+        const result = await this.sequelize.model(this.model).findOne({
+            where: cond
+        });
+        return result?.get({ plain: true }) || null;
+    }
 
     async create(data: Brand): Promise<boolean> {
-        await this.sequelize.models[this.modelName].create(data);
-        return true;
+        const result = await this.sequelize.model(this.model).create(data);
+        return !!result;
     }
 
-    async findByCond(cond: BrandCondDTO): Promise<Brand | null> {
-        const brand = await this.sequelize.models[this.modelName].findOne({
-          where: cond,
+    async update(id: string, data: Partial<Brand>): Promise<boolean> {
+        const result = await this.sequelize.model(this.model).update(data, {
+            where: { id }
         });
-        if (!brand) return null;
-        
-            //Convert to plain JS object
-            const persistenceData = brand.get({ plain: true });
-        
-            return persistenceData as Brand;
+        return result[0] > 0;
     }
 
-    get(id: string): Promise<Brand | null> {
-        throw new Error("Method not implemented.");
-    }
-    
-    listByIds(ids: string): Promise<Brand[]> {
-        throw new Error("Method not implemented.");
+    async delete(id: string): Promise<boolean> {
+        const result = await this.sequelize.model(this.model).destroy({
+            where: { id }
+        });
+        return result > 0;
     }
 }

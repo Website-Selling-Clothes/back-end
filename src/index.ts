@@ -19,7 +19,7 @@ config();
 
   //Định nghĩa các router cho API
   app.use("/v1", setupUser(sequelize));
-  app.use("/v2", setupBrand(sequelize));
+  app.use("/v1", setupBrand(sequelize));
 
   //Chạy server
   app.listen(port, () => {
