@@ -3,11 +3,12 @@ import { sequelize } from "@share/component/sequelize";
 import { config } from "dotenv";
 import express, { Request, Response } from "express";
 import { setupUser } from "@modules/user";
+import { setupSupplier } from "@modules/supplier";
 
 config();
 
 (async () => {
-  await sequelize.authenticate();
+  await sequelize.authenticate(); 
   console.log("Connection has been established successfully.");
 
   const app = express();
@@ -16,6 +17,8 @@ config();
   app.use(express.json());
 
   app.use("/v1", setupUser(sequelize));
+  app.use("/v2", setupSupplier(sequelize));
+
 
   app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
